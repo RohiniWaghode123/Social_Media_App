@@ -5,6 +5,7 @@ const DEFAULT_CONTEXT = {
   postList: [],
   addPost: () => {},
   deletePost: () => {},
+  addInitialPost: () => {},
 };
 
 // Create context
@@ -20,37 +21,20 @@ const postListReducer = (currPostList, action) => {
 
     case "ADD_POST":
       return [action.payload, ...currPostList];
+    case "ADD_INITIAL_POSTS":
+      return [...action.payload.posts]
 
     default:
       return currPostList;
   }
 };
 
-// ✅ Initial dummy data
-const default_postlist = [
-  {
-    id: "1",
-    title: "Going to mumbai",
-    body: "Hi friends I am going to mumbai for my vacations.",
-    reactions: 1,
-    userId: "user-9",
-    tags: ["Vacation", "Mumbai", "Enjoying"],
-  },
-  {
-    id: "2",
-    title: "Going to pune",
-    body: "I am excited to join a new job.",
-    reactions: 15,
-    userId: "user-12",
-    tags: ["Job", "Growth", "Unbelievable"],
-  },
-];
 
 // Provider component
 const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(
     postListReducer,
-    default_postlist
+    []
   );
 
   // Add Post function
@@ -67,6 +51,16 @@ const PostListProvider = ({ children }) => {
       },
     });
   };
+  //addInitial posts
+
+  const addInitialPost = (posts) => {
+    dispatchPostList({
+      type: "ADD_INITIAL_POSTS",
+      payload: {
+      posts
+      },
+    });
+  };
 
   // Delete Post function
   const deletePost = (postId) => {
@@ -78,7 +72,7 @@ const PostListProvider = ({ children }) => {
   };
 
   return (
-    <PostList.Provider value={{ postList, addPost, deletePost }}>
+    <PostList.Provider value={{ postList, addPost, deletePost ,addInitialPost}}>
       {children}
     </PostList.Provider>
   );

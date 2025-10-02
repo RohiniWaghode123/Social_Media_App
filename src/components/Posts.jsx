@@ -1,26 +1,45 @@
 import { useContext } from "react";
 import { MdDelete } from "react-icons/md";
 import { PostList } from "../store/Post-list-Context";
-const Posts = ({post}) => {
-  const {deletePost} = useContext(PostList);
+
+const Posts = ({ post }) => {
+  const { deletePost } = useContext(PostList);
+
   return (
     <div className="card post-card" style={{ width: "30rem" }}>
-      
       <div className="card-body">
-        <h5 className="card-title">{post.title}
-           <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" onClick={() => deletePost(post.id)}>
-    <MdDelete />
-    <span className="visually-hidden">unread messages</span>
-  </span>
+        {/* Post Title and Delete Button */}
+        <h5 className="card-title">
+          {post.title}
+          <button
+            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border-0"
+            onClick={() => deletePost(post.id)}
+            title="Delete Post"
+            style={{ cursor: "pointer" }}
+          >
+            <MdDelete />
+            <span className="visually-hidden">Delete post</span>
+          </button>
         </h5>
-        <p className="card-text">
-          {post.body}
-        </p>
-        {post.tags.map(tag =>
-        <span key={tag}  className="badge text-bg-primary hashtag">{tag}</span>)}
-        <div className="alert alert-info reactions" role="alert">
-  This post has been reacted by {post.reactions} people.
-</div>
+
+        {/* Post Body */}
+        <p className="card-text">{post.body}</p>
+
+        {/* Post Tags */}
+        {Array.isArray(post.tags) &&
+          post.tags.map((tag, index) => (
+            <span
+              key={`${post.id}-${tag}-${index}`}
+              className="badge text-bg-primary hashtag me-1"
+            >
+              {tag}
+            </span>
+          ))}
+
+        {/* Post Reactions */}
+        <div className="alert alert-info reactions mt-3" role="alert">
+          This post has been reacted to by {post.reactions} people.
+        </div>
       </div>
     </div>
   );

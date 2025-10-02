@@ -24,3 +24,9 @@
   margin-left: 10px;
   margin-top:50px ;
 }
+.msg{
+  text-decoration: brown;
+  font-size: 20px;
+    font-style: italic;
+margin: 50px;
+}
